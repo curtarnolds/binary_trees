@@ -1,6 +1,7 @@
 #include "binary_trees.h"
 
 
+int _helper(const binary_tree_t *tree, int lvl, int ref_l);
 /**
  * binary_tree_is_perfect - Checks if a binary tree is perfect
  * @tree: Pointer to the root node of the tree to check
@@ -8,37 +9,40 @@
 */
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-	int height_r, height_l;
+	int ref_lvl;
+	const binary_tree_t *current = tree;
 
 	if (tree == NULL)
 		return (0);
 
-	if (tree->left && tree->right)
+	ref_lvl = 0;
+	while (current->left)
 	{
-		height_l = tree->left ? 1 + binary_tree_height(tree->left) : 0;
-		height_r = tree->right ? 1 + binary_tree_height(tree->right) : 0;
-		return (height_r == height_l ? 1 : 0);
+		current = current->left;
+		ref_lvl++;
 	}
-	else
-		return (0);
 
+	return (_helper(tree, 0, ref_lvl));
 }
 
 
 /**
- * binary_tree_height - Measures the height of a binary tree
- * @tree: Pointer to the root node of the tree to be measured
- * Return: 0 if tree is NULL
+ * _helper - Helper function to track level of leaf nodes
+ * @tree: Pointer to the root of a binary tree
+ * @ref_l: Given reference level
+ * @lvl: Current level of a node
+ * Return: 1 if levels are the same, else 0
 */
-size_t binary_tree_height(const binary_tree_t *tree)
+int _helper(const binary_tree_t *tree, int lvl, int ref_l)
 {
-	size_t height_l;
-	size_t height_r;
+	if (tree->left == NULL && tree->right == NULL)
+		return (lvl == ref_l);
 
-	if (tree == NULL)
-		return (0);
+	if (tree->left && tree->right)
+	{
+		return (_helper(tree->left, lvl + 1, ref_l) &&
+			   _helper(tree->right, lvl + 1, ref_l));
+	}
 
-	height_l = tree->left ? 1 + binary_tree_height(tree->left) : 0;
-	height_r = tree->right ? 1 + binary_tree_height(tree->right) : 0;
-	return (height_l > height_r ? height_l : height_r);
+	return (0);
 }
