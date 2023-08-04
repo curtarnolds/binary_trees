@@ -15,6 +15,10 @@ binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 	const binary_tree_t *current, *temp, *ref;
 	size_t depth_f, depth_s;
 
+	if (first == NULL || second == NULL)
+		return (NULL);
+
+
 	depth_f = _depth(first);
 	depth_s = _depth(second);
 	if (depth_f <= depth_s)
