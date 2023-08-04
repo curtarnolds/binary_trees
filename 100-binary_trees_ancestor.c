@@ -37,10 +37,10 @@ binary_tree_t *binary_trees_ancestor(const binary_tree_t *first,
 	while (ref)
 	{
 		current = temp;
-		while (current->parent)
+		while (current)
 		{
-			if (ref == current->parent)
-				return (current->parent);
+			if (ref == current)
+				return ((binary_tree_t *) current);
 			current = current->parent;
 		}
 		ref = ref->parent;
